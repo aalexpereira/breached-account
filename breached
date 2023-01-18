@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+api=""
+
+if [ "$1" == "" ]
+then
+echo -e "$0 usuario, e-mail ou telefone: "
+echo -e "\nexample: $0 test@example.com \ test \ 550000000"
+else
+echo -e "\nlogin: $1"
+curl -ks --request GET  --url "https://breachdirectory.p.rapidapi.com/?func=auto&term=$1" --header "X-RapidAPI-Host: breachdirectory.p.rapidapi.com" --header "X-RapidAPI-Key: $api" |egrep "password|sha1" |egrep>
+echo -e "\nHashes decrypted:"
+for hash in `cat 01.txt|grep "sha1"  |awk -F ' ' '{print $2}'|tr -d ',"'`;do echo "$hash" - $(curl -ks "https://hashtoolkit.com/decrypt-hash/?hash=$hash" |grep "/generate-hash/?text=" |awk -F 'text=' '{print $2>
+echo -e "\nDeseja salvar resultado? Y/N: "; read sla
+if [[ "$sla" == "Y" || "$sla" == "y" ]]
+then
+clear
+echo -e "\nSalvando..."
+echo -e "\nLogin: $1" > senhas.txt ; cat 02.txt |sort -u >> senhas.txt
+clear
+echo -e "\nSalvo com nome: senhas.txt"
+else
+echo -e "\nNão salvando..."
+fi; fi
+rm -f 01.txt 02.txt
